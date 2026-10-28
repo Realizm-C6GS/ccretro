@@ -240,14 +240,14 @@ static inline unsigned long long collatz64_batched(uint64_t *n_inout){
             int tz = CTTZ64(v);
             v >>= tz;
             n = v;
-            it += (unsigned long long)tz;
+            it += 1ULL + (unsigned long long)tz; // 3*n+1, then tz halvings
 #else
             if(n > (UINT64_MAX-1ULL)/3ULL){ *n_inout = n; return it; }
             uint64_t v = 3*n + 1;
             int tz = CTTZ64(v);
             v >>= tz;
             n = v;
-            it += (unsigned long long)tz;
+            it += 1ULL + (unsigned long long)tz; // 3*n+1, then tz halvings
 #endif
         }
     }
@@ -280,7 +280,7 @@ static unsigned long long CollatzLenHybrid(mpz_t scratch, const mpz_t n_in){
             mpz_add_ui(scratch, scratch, 1);
             size_t tz = mpz_scan1(scratch, 0);
             mpz_tdiv_q_2exp(scratch, scratch, tz);
-            it += (unsigned long long)tz;
+            it += 1ULL + (unsigned long long)tz; // 3*n+1, then tz halvings
         }
     }
 }
